@@ -19,10 +19,37 @@ class Board extends React.Component{
     constructor(props){
         super(props);
     }
-
+    Whowins(RowArry){
+        const winninglines =[
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [2, 4, 6],
+        ];
+      for(let i =0;i<winninglines.length;i++){
+            const [a,b,c] = winninglines[i];
+            if(RowArry[a] && RowArry[a] === RowArry[b] && RowArry[a] === RowArry[c]){
+                return RowArry[a];
+            }
+        }
+        return null;
+    }
+      
     render(){
+
         const RowBoxes = [0,3,6];
         const RowArry = Array(3).fill(null);
+        const winner = this.Whowins(RowArry);
+        let RowArrIndex;
+        if(winner){
+            RowArrIndex = `Wygrywa ${winner}`;
+        }else{
+            
+        }
 
         return RowBoxes.map((RowBoxe, emptyindex) =>{
             return(
@@ -45,7 +72,7 @@ class Board extends React.Component{
 }
 
 class Game extends React.Component{
-    constructor(props){
+    constructor(props){                 //Life circle  pamięć odwołuje się do constructora 
         super(props);
         this.state = { 
             RowArry: Array(9).fill(null),
@@ -70,6 +97,7 @@ class Game extends React.Component{
         });
 
     }
+
     render(){
         return(
         <div className="game">
