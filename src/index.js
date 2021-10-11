@@ -20,37 +20,19 @@ class Board extends React.Component{
     constructor(props){
         super(props);
     }
-    Whowins(RowArry){
-        const winninglines =[
-            [0, 1, 2],
-            [3, 4, 5],
-            [6, 7, 8],
-            [0, 3, 6],
-            [1, 4, 7],
-            [2, 5, 8],
-            [0, 4, 8],
-            [2, 4, 6],
-        ];
-      for(let i =0;i<winninglines.length;i++){
-            const [a,b,c] = winninglines[i];
-            if(RowArry[a] && RowArry[a] === RowArry[b] && RowArry[a] === RowArry[c]){
-                return RowArry[a];
-            }
-        }
-        return null;
-    }
+    
       
     render(){
 
         const RowBoxes = [0,3,6];
         const RowArry = Array(3).fill(null);
-        const winner = this.Whowins(RowArry);
-        let status;
-        if(winner){
-            status = `Wygrywa ${winner}`;
-        }else{
+        // const winner = this.Whowins(RowArry);
+        // let status;
+        // if(winner){
+        //     status = `Wygrywa ${winner}`;
+        // }else{
             
-        }
+        // }
 
         return RowBoxes.map((RowBoxe, emptyindex) =>{
             return(
@@ -78,25 +60,67 @@ class Game extends React.Component{
         this.state = { 
             RowArry: Array(9).fill(null),
             nextSymbol: "X",
+            xIsNext: true,
         };
     this.handleboxClick = this.handleboxClick.bind(this);
     }
-
-    handleboxClick(index){
+    /*
+      handleClick(i) {
+    const squares = this.state.squares.slice();
+    if (calculateWinner(squares) || squares[i]) {
+      return;
+    }
+    squares[i] = this.state.xIsNext ? 'X' : 'O';
+    this.setState({
+      squares: squares,
+      xIsNext: !this.state.xIsNext,
+    });
+  }
+    */
+    handleboxClick(index,){
         console.log(`User clicked ${index}`);
-        const RowArry = this.state.RowArry;
+        const RowArry = this.state.RowArry; 
 
-        if (RowArry[index] !== null){
+        if (RowArry[index] !== null || this.state.gameWon){
             return;
         }
 
+        // Update the grid
         RowArry[index]= this.state.nextSymbol;
 
+        // Check for winner with updated grid data
+        const winningCombination = this.Whowins(RowArry);
+        if (winningCombination) {
+            console.log(`Winning ${winningCombination}`);           
+        }        
+        
         this.setState({
             RowArry: RowArry,
             nextSymbol: this.state.nextSymbol === "X" ? "O" : "X",
         });
+    }
 
+    Whowins(RowArry){
+        // Define winning combinations
+        const winninglines =[
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [2, 4, 6],
+        ];
+        // One on this winning combination is actually present in your grid
+        // and your grid is the RowArray
+        for(let index =0;index<winninglines.length;index++){
+            const [a,b,c] = winninglines[index];
+            if(RowArry[a] && RowArry[a] === RowArry[b] && RowArry[a] === RowArry[c]){
+                return winninglines[index];
+            }
+        }
+        return null;
     }
 
     render(){
