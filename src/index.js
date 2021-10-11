@@ -60,7 +60,7 @@ class Game extends React.Component{
         this.state = { 
             RowArry: Array(9).fill(null),
             nextSymbol: "X",
-            xIsNext: true,
+            gameWon: false,
         };
     this.handleboxClick = this.handleboxClick.bind(this);
     }
@@ -91,7 +91,8 @@ class Game extends React.Component{
         // Check for winner with updated grid data
         const winningCombination = this.Whowins(RowArry);
         if (winningCombination) {
-            console.log(`Winning ${winningCombination}`);           
+            console.log(`Winning ${winningCombination}`);  
+            this.setState({gameWon: true});         
         }        
         
         this.setState({
