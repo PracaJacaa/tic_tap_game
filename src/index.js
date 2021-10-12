@@ -10,7 +10,7 @@ class Square extends React.Component{
         return(
             <button  
             onClick={() => this.props.handleboxClick()}>
-                {this.props.value}
+                {this.props.value || <div>&nbsp;</div>}
             </button>     //later add some onchange 
         );
     }
